@@ -154,15 +154,33 @@ CREATE TABLE panitia_pertunjukan (
     CONSTRAINT fk_panitia FOREIGN KEY (id_panitia) REFERENCES panitia(id_panitia) ON DELETE CASCADE
 );
 
+-- index pendukung kolom FK yang sering di-join/filter (Postgres tidak meng-index kolom FK
+-- secara otomatis, hanya sisi yang direferensikan/PK)
+CREATE INDEX idx_tiket_jadwal ON tiket (id_jadwal_pertunjukan);
+CREATE INDEX idx_tiket_penonton ON tiket (id_penonton);
+CREATE INDEX idx_tiket_kupon ON tiket (id_kupon);
+CREATE INDEX idx_transaksi_penonton ON transaksi_merch (id_penonton);
+CREATE INDEX idx_transaksi_kupon ON transaksi_merch (id_kupon);
+CREATE INDEX idx_info_merch_item ON info_merch (id_item);
+CREATE INDEX idx_artis_pertunjukan_artis ON artis_pertunjukan (id_artis);
+CREATE INDEX idx_sponsor_pertunjukan_sponsor ON sponsor_pertunjukan (id_sponsor);
+CREATE INDEX idx_vendor_pertunjukan_vendor ON vendor_pertunjukan (id_vendor);
+CREATE INDEX idx_panitia_pertunjukan_jadwal ON panitia_pertunjukan (id_jadwal_pertunjukan);
+CREATE INDEX idx_jadwal_lokasi ON jadwal_pertunjukan (id_lokasi);
+CREATE INDEX idx_jadwal_tanggal_mulai ON jadwal_pertunjukan (tanggal_mulai);
+
 -- trigger untuk status redeem kupon
 CREATE OR REPLACE FUNCTION check_and_redeem_kupon()
 RETURNS TRIGGER AS $$
 DECLARE
     status_redeem BOOLEAN;
 BEGIN
-    -- jika transaksi ini menggunakan kupon (tidak NULL)
-    IF NEW.id_kupon IS NOT NULL THEN
-        
+    -- jika transaksi ini menggunakan kupon (tidak NULL), dan kupon tersebut baru saja
+    -- dipasang (INSERT, atau UPDATE yang mengganti id_kupon) -- bukan UPDATE lain yang
+    -- kebetulan menyentuh baris yang kuponnya sudah lama ter-redeem
+    IF NEW.id_kupon IS NOT NULL
+       AND (TG_OP = 'INSERT' OR NEW.id_kupon IS DISTINCT FROM OLD.id_kupon) THEN
+
         -- ambil status kupon dari tabel kupon
         SELECT is_redeemed INTO status_redeem 
         FROM kupon 
