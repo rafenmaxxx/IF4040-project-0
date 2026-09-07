@@ -37,3 +37,10 @@ Apabila ada pembaruan pada *script* SQL di folder `init-scripts` dan kamu ingin 
 docker compose down -v
 docker compose up -d
 ```
+
+## (Opsional) Generate Ulang Dummy Data (Python)
+Jika ingin mengubah atau generate ulang data:
+1. python -m venv venv
+2. .\venv\Scripts\activate  (atau `source venv/bin/activate` di Mac/Linux)
+3. pip install -r requirements.txt
+4. python scripts/seed.py
