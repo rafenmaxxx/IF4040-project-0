@@ -1,0 +1,38 @@
+Timing is on.
+                                                                     QUERY PLAN                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=1485.75..1491.75 rows=2400 width=150) (actual time=14.153..14.220 rows=2400 loops=1)
+   Sort Key: (COALESCE(sum(t.harga), '0'::numeric)) DESC
+   Sort Method: quicksort  Memory: 359kB
+   Buffers: shared hit=297
+   ->  HashAggregate  (cost=1309.00..1351.00 rows=2400 width=150) (actual time=13.087..13.513 rows=2400 loops=1)
+         Group Key: jp.id_jadwal_pertunjukan
+         Batches: 1  Memory Usage: 1393kB
+         Buffers: shared hit=294
+         ->  Hash Left Join  (cost=289.75..1035.48 rows=27352 width=66) (actual time=1.255..9.251 rows=27352 loops=1)
+               Hash Cond: (t.id_tiket = tv.id_tiket)
+               Buffers: shared hit=294
+               ->  Hash Right Join  (cost=87.00..760.92 rows=27352 width=66) (actual time=0.496..5.870 rows=27352 loops=1)
+                     Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                     Buffers: shared hit=260
+                     ->  Seq Scan on tiket t  (cost=0.00..602.00 rows=27352 width=16) (actual time=0.002..2.191 rows=27352 loops=1)
+                           Filter: ((status_pembayaran)::text = 'Lunas'::text)
+                           Rows Removed by Filter: 2648
+                           Buffers: shared hit=227
+                     ->  Hash  (cost=57.00..57.00 rows=2400 width=54) (actual time=0.477..0.477 rows=2400 loops=1)
+                           Buckets: 4096  Batches: 1  Memory Usage: 236kB
+                           Buffers: shared hit=33
+                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=54) (actual time=0.005..0.191 rows=2400 loops=1)
+                                 Buffers: shared hit=33
+               ->  Hash  (cost=109.00..109.00 rows=7500 width=4) (actual time=0.735..0.735 rows=7500 loops=1)
+                     Buckets: 8192  Batches: 1  Memory Usage: 328kB
+                     Buffers: shared hit=34
+                     ->  Seq Scan on tiket_vip tv  (cost=0.00..109.00 rows=7500 width=4) (actual time=0.004..0.277 rows=7500 loops=1)
+                           Buffers: shared hit=34
+ Planning:
+   Buffers: shared hit=260
+ Planning Time: 0.917 ms
+ Execution Time: 14.447 ms
+(32 rows)
+
+Time: 16.850 ms

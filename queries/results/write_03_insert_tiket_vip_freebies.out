@@ -1,0 +1,42 @@
+Timing is on.
+Time: 0.697 ms
+Time: 0.346 ms
+Time: 0.206 ms
+Time: 0.136 ms
+BEGIN
+Time: 0.055 ms
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Insert on freebies  (cost=0.04..0.10 rows=0 width=0) (actual time=0.954..0.955 rows=0 loops=1)
+   Buffers: shared hit=177
+   CTE tiket_baru
+     ->  Insert on tiket  (cost=0.00..0.01 rows=1 width=82) (actual time=0.878..0.879 rows=1 loops=1)
+           Buffers: shared hit=131
+           ->  Result  (cost=0.00..0.01 rows=1 width=82) (actual time=0.024..0.024 rows=1 loops=1)
+                 Buffers: shared hit=13
+   CTE vip_baru
+     ->  Insert on tiket_vip  (cost=0.00..0.02 rows=1 width=4) (actual time=0.914..0.915 rows=1 loops=1)
+           Buffers: shared hit=151
+           ->  CTE Scan on tiket_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.879..0.880 rows=1 loops=1)
+                 Buffers: shared hit=131
+   ->  Nested Loop  (cost=0.00..0.06 rows=2 width=8) (actual time=0.918..0.920 rows=2 loops=1)
+         Buffers: shared hit=151
+         ->  CTE Scan on vip_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.915..0.916 rows=1 loops=1)
+               Buffers: shared hit=151
+         ->  Function Scan on unnest item_id  (cost=0.00..0.02 rows=2 width=4) (actual time=0.002..0.002 rows=2 loops=1)
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.067 ms
+ Trigger for constraint fk_penonton_tiket on tiket: time=0.100 calls=1
+ Trigger for constraint fk_jadwal_tiket on tiket: time=0.046 calls=1
+ Trigger for constraint fk_kupon_tiket on tiket: time=0.029 calls=1
+ Trigger trg_redeem_kupon_tiket on tiket: time=0.162 calls=1
+ Trigger for constraint fk_tiket_vip on tiket_vip: time=0.044 calls=1
+ Trigger for constraint fk_tiket_freebies on freebies: time=0.042 calls=2
+ Trigger for constraint fk_item_freebies on freebies: time=0.033 calls=2
+ Execution Time: 1.286 ms
+(28 rows)
+
+Time: 1.735 ms
+ROLLBACK
+Time: 0.095 ms

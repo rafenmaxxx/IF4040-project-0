@@ -1,0 +1,94 @@
+Timing is on.
+Time: 2.455 ms
+                                                                                QUERY PLAN                                                                                
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=61.02..194.96 rows=1 width=290) (actual time=0.260..0.264 rows=1 loops=1)
+   Group Key: jp.id_jadwal_pertunjukan, lp.id_lokasi
+   Buffers: shared hit=91
+   ->  Sort  (cost=61.02..61.02 rows=1 width=126) (actual time=0.088..0.090 rows=18 loops=1)
+         Sort Key: lp.id_lokasi
+         Sort Method: quicksort  Memory: 27kB
+         Buffers: shared hit=27
+         ->  Nested Loop Left Join  (cost=4.94..61.01 rows=1 width=126) (actual time=0.027..0.067 rows=18 loops=1)
+               Join Filter: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+               Buffers: shared hit=24
+               ->  Nested Loop  (cost=0.56..16.61 rows=1 width=122) (actual time=0.010..0.011 rows=1 loops=1)
+                     Buffers: shared hit=6
+                     ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan jp  (cost=0.28..8.30 rows=1 width=78) (actual time=0.005..0.005 rows=1 loops=1)
+                           Index Cond: (id_jadwal_pertunjukan = 273)
+                           Buffers: shared hit=3
+                     ->  Index Scan using lokasi_pertunjukan_pkey on lokasi_pertunjukan lp  (cost=0.28..8.29 rows=1 width=48) (actual time=0.004..0.004 rows=1 loops=1)
+                           Index Cond: (id_lokasi = jp.id_lokasi)
+                           Buffers: shared hit=3
+               ->  Bitmap Heap Scan on tiket t  (cost=4.38..44.25 rows=12 width=8) (actual time=0.015..0.051 rows=18 loops=1)
+                     Recheck Cond: (id_jadwal_pertunjukan = 273)
+                     Heap Blocks: exact=16
+                     Buffers: shared hit=18
+                     ->  Bitmap Index Scan on idx_tiket_jadwal  (cost=0.00..4.38 rows=12 width=0) (actual time=0.011..0.011 rows=18 loops=1)
+                           Index Cond: (id_jadwal_pertunjukan = 273)
+                           Buffers: shared hit=2
+   SubPlan 1
+     ->  Aggregate  (cost=4.35..4.36 rows=1 width=32) (actual time=0.015..0.015 rows=1 loops=1)
+           Buffers: shared hit=3
+           ->  Index Only Scan using fasilitas_pkey on fasilitas f  (cost=0.28..4.33 rows=3 width=22) (actual time=0.010..0.011 rows=3 loops=1)
+                 Index Cond: (id_lokasi = lp.id_lokasi)
+                 Heap Fetches: 0
+                 Buffers: shared hit=3
+   SubPlan 2
+     ->  Aggregate  (cost=29.24..29.25 rows=1 width=32) (actual time=0.029..0.030 rows=1 loops=1)
+           Buffers: shared hit=15
+           ->  Nested Loop  (cost=0.56..29.23 rows=3 width=18) (actual time=0.019..0.028 rows=4 loops=1)
+                 Buffers: shared hit=15
+                 ->  Index Only Scan using artis_pertunjukan_pkey on artis_pertunjukan ap2  (cost=0.28..4.33 rows=3 width=4) (actual time=0.008..0.008 rows=4 loops=1)
+                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                       Heap Fetches: 0
+                       Buffers: shared hit=3
+                 ->  Index Scan using artis_pkey on artis a  (cost=0.28..8.30 rows=1 width=22) (actual time=0.004..0.004 rows=1 loops=4)
+                       Index Cond: (id_artis = ap2.id_artis)
+                       Buffers: shared hit=12
+   SubPlan 3
+     ->  Aggregate  (cost=29.24..29.25 rows=1 width=32) (actual time=0.016..0.017 rows=1 loops=1)
+           Buffers: shared hit=12
+           ->  Nested Loop  (cost=0.56..29.23 rows=3 width=35) (actual time=0.010..0.015 rows=3 loops=1)
+                 Buffers: shared hit=12
+                 ->  Index Only Scan using vendor_pertunjukan_pkey on vendor_pertunjukan vp  (cost=0.28..4.33 rows=3 width=4) (actual time=0.005..0.005 rows=3 loops=1)
+                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                       Heap Fetches: 0
+                       Buffers: shared hit=3
+                 ->  Index Scan using vendor_pkey on vendor v  (cost=0.28..8.30 rows=1 width=39) (actual time=0.003..0.003 rows=1 loops=3)
+                       Index Cond: (id_vendor = vp.id_vendor)
+                       Buffers: shared hit=9
+   SubPlan 4
+     ->  Aggregate  (cost=20.92..20.93 rows=1 width=32) (actual time=0.059..0.059 rows=1 loops=1)
+           Buffers: shared hit=12
+           ->  Nested Loop  (cost=0.56..20.92 rows=2 width=21) (actual time=0.014..0.054 rows=3 loops=1)
+                 Buffers: shared hit=12
+                 ->  Index Only Scan using sponsor_pertunjukan_pkey on sponsor_pertunjukan sp  (cost=0.28..4.32 rows=2 width=4) (actual time=0.006..0.007 rows=3 loops=1)
+                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                       Heap Fetches: 0
+                       Buffers: shared hit=3
+                 ->  Index Scan using sponsor_pkey on sponsor s  (cost=0.28..8.29 rows=1 width=25) (actual time=0.015..0.015 rows=1 loops=3)
+                       Index Cond: (id_sponsor = sp.id_sponsor)
+                       Buffers: shared hit=9
+   SubPlan 5
+     ->  Aggregate  (cost=50.12..50.13 rows=1 width=32) (actual time=0.040..0.041 rows=1 loops=1)
+           Buffers: shared hit=22
+           ->  Nested Loop  (cost=4.60..50.11 rows=4 width=32) (actual time=0.023..0.038 rows=5 loops=1)
+                 Buffers: shared hit=22
+                 ->  Bitmap Heap Scan on panitia_pertunjukan pp  (cost=4.32..16.90 rows=4 width=4) (actual time=0.014..0.022 rows=5 loops=1)
+                       Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                       Heap Blocks: exact=5
+                       Buffers: shared hit=7
+                       ->  Bitmap Index Scan on idx_panitia_pertunjukan_jadwal  (cost=0.00..4.32 rows=4 width=0) (actual time=0.011..0.011 rows=5 loops=1)
+                             Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                             Buffers: shared hit=2
+                 ->  Index Scan using panitia_pkey on panitia pn  (cost=0.28..8.30 rows=1 width=36) (actual time=0.002..0.002 rows=1 loops=5)
+                       Index Cond: (id_panitia = pp.id_panitia)
+                       Buffers: shared hit=15
+ Planning:
+   Buffers: shared hit=452
+ Planning Time: 1.053 ms
+ Execution Time: 0.397 ms
+(87 rows)
+
+Time: 2.204 ms

@@ -1,0 +1,36 @@
+Timing is on.
+Time: 0.660 ms
+Time: 0.368 ms
+Time: 0.251 ms
+Time: 0.165 ms
+Time: 0.206 ms
+BEGIN
+Time: 0.072 ms
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Insert on info_merch  (cost=0.02..0.11 rows=0 width=0) (actual time=0.916..0.917 rows=0 loops=1)
+   Buffers: shared hit=192
+   CTE transaksi_baru
+     ->  Insert on transaksi_merch  (cost=0.00..0.02 rows=1 width=28) (actual time=0.862..0.863 rows=1 loops=1)
+           Buffers: shared hit=144
+           ->  Result  (cost=0.00..0.02 rows=1 width=28) (actual time=0.032..0.032 rows=1 loops=1)
+                 Buffers: shared hit=13
+   ->  Nested Loop  (cost=0.00..0.09 rows=3 width=12) (actual time=0.865..0.867 rows=3 loops=1)
+         Buffers: shared hit=144
+         ->  CTE Scan on transaksi_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.863..0.864 rows=1 loops=1)
+               Buffers: shared hit=144
+         ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=8) (actual time=0.001..0.001 rows=3 loops=1)
+ Planning:
+   Buffers: shared hit=12
+ Planning Time: 0.057 ms
+ Trigger for constraint fk_penonton_transaksi on transaksi_merch: time=0.054 calls=1
+ Trigger for constraint fk_kupon_transaksi on transaksi_merch: time=0.022 calls=1
+ Trigger trg_redeem_kupon_merch on transaksi_merch: time=0.321 calls=1
+ Trigger for constraint fk_transaksi on info_merch: time=0.053 calls=3
+ Trigger for constraint fk_item_transaksi on info_merch: time=0.056 calls=3
+ Execution Time: 1.135 ms
+(21 rows)
+
+Time: 1.381 ms
+ROLLBACK
+Time: 0.109 ms

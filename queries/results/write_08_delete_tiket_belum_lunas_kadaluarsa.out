@@ -1,0 +1,31 @@
+Timing is on.
+BEGIN
+Time: 0.119 ms
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ Delete on tiket  (cost=78.79..687.75 rows=0 width=0) (actual time=2.374..2.375 rows=0 loops=1)
+   Buffers: shared hit=3101
+   ->  Hash Join  (cost=78.79..687.75 rows=1394 width=12) (actual time=0.503..1.791 rows=1419 loops=1)
+         Hash Cond: (tiket.id_jadwal_pertunjukan = jadwal_pertunjukan.id_jadwal_pertunjukan)
+         Buffers: shared hit=260
+         ->  Seq Scan on tiket  (cost=0.00..602.00 rows=2648 width=10) (actual time=0.279..1.354 rows=2648 loops=1)
+               Filter: ((status_pembayaran)::text = 'Belum Lunas'::text)
+               Rows Removed by Filter: 27352
+               Buffers: shared hit=227
+         ->  Hash  (cost=63.00..63.00 rows=1263 width=10) (actual time=0.210..0.210 rows=1280 loops=1)
+               Buckets: 2048  Batches: 1  Memory Usage: 71kB
+               Buffers: shared hit=33
+               ->  Seq Scan on jadwal_pertunjukan  (cost=0.00..63.00 rows=1263 width=10) (actual time=0.002..0.121 rows=1280 loops=1)
+                     Filter: (tanggal_mulai < '2026-11-01'::date)
+                     Rows Removed by Filter: 1120
+                     Buffers: shared hit=33
+ Planning:
+   Buffers: shared hit=284
+ Planning Time: 0.513 ms
+ Trigger for constraint fk_tiket_vip: time=2.983 calls=1419
+ Execution Time: 5.448 ms
+(21 rows)
+
+Time: 6.600 ms
+ROLLBACK
+Time: 0.136 ms

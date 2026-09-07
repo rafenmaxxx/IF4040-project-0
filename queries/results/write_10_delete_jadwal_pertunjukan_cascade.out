@@ -1,0 +1,27 @@
+Timing is on.
+Time: 0.726 ms
+BEGIN
+Time: 0.075 ms
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on jadwal_pertunjukan  (cost=0.28..8.30 rows=0 width=0) (actual time=0.053..0.054 rows=0 loops=1)
+   Buffers: shared hit=16
+   ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan  (cost=0.28..8.30 rows=1 width=6) (actual time=0.003..0.004 rows=1 loops=1)
+         Index Cond: (id_jadwal_pertunjukan = 1)
+         Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.027 ms
+ Trigger for constraint fk_jadwal_tiket on jadwal_pertunjukan: time=0.326 calls=1
+ Trigger for constraint fk_jadwal_artis on jadwal_pertunjukan: time=0.099 calls=1
+ Trigger for constraint fk_jadwal_vendor on jadwal_pertunjukan: time=0.086 calls=1
+ Trigger for constraint fk_jadwal_sponsor on jadwal_pertunjukan: time=0.074 calls=1
+ Trigger for constraint fk_jadwal_panitia on jadwal_pertunjukan: time=0.094 calls=1
+ Trigger for constraint fk_tiket_vip on tiket: time=0.105 calls=10
+ Trigger for constraint fk_tiket_freebies on tiket_vip: time=0.055 calls=1
+ Execution Time: 0.953 ms
+(16 rows)
+
+Time: 1.156 ms
+ROLLBACK
+Time: 0.159 ms

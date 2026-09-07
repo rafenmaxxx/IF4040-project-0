@@ -1,0 +1,25 @@
+Timing is on.
+Time: 28.886 ms
+BEGIN
+Time: 0.124 ms
+                                                          QUERY PLAN                                                          
+------------------------------------------------------------------------------------------------------------------------------
+ Delete on penonton  (cost=0.29..8.30 rows=0 width=0) (actual time=0.048..0.048 rows=0 loops=1)
+   Buffers: shared hit=10
+   ->  Index Scan using penonton_pkey on penonton  (cost=0.29..8.30 rows=1 width=6) (actual time=0.007..0.008 rows=1 loops=1)
+         Index Cond: (id_penonton = 5982)
+         Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.188 ms
+ Trigger for constraint fk_penonton_tiket on penonton: time=0.120 calls=1
+ Trigger for constraint fk_penonton_transaksi on penonton: time=0.040 calls=1
+ Trigger for constraint fk_tiket_vip on tiket: time=0.151 calls=8
+ Trigger for constraint fk_transaksi on transaksi_merch: time=0.140 calls=3
+ Trigger for constraint fk_tiket_freebies on tiket_vip: time=0.158 calls=6
+ Execution Time: 0.719 ms
+(14 rows)
+
+Time: 1.132 ms
+ROLLBACK
+Time: 0.091 ms

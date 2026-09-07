@@ -1,0 +1,32 @@
+Timing is on.
+Time: 0.798 ms
+                                                                            QUERY PLAN                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=36.74..36.75 rows=3 width=111) (actual time=0.044..0.045 rows=2 loops=1)
+   Sort Key: jp.tanggal_mulai DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=15
+   ->  Append  (cost=4.58..36.71 rows=3 width=111) (actual time=0.019..0.030 rows=2 loops=1)
+         Buffers: shared hit=12
+         ->  Nested Loop  (cost=4.58..28.37 rows=2 width=108) (actual time=0.018..0.022 rows=2 loops=1)
+               Buffers: shared hit=10
+               ->  Bitmap Heap Scan on tiket t  (cost=4.30..11.76 rows=2 width=22) (actual time=0.010..0.011 rows=2 loops=1)
+                     Recheck Cond: (id_penonton = 3)
+                     Heap Blocks: exact=2
+                     Buffers: shared hit=4
+                     ->  Bitmap Index Scan on idx_tiket_penonton  (cost=0.00..4.30 rows=2 width=0) (actual time=0.008..0.008 rows=2 loops=1)
+                           Index Cond: (id_penonton = 3)
+                           Buffers: shared hit=2
+               ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan jp  (cost=0.28..8.30 rows=1 width=62) (actual time=0.004..0.004 rows=1 loops=2)
+                     Index Cond: (id_jadwal_pertunjukan = t.id_jadwal_pertunjukan)
+                     Buffers: shared hit=6
+         ->  Index Scan using idx_transaksi_penonton on transaksi_merch tm  (cost=0.29..8.30 rows=1 width=116) (actual time=0.007..0.007 rows=0 loops=1)
+               Index Cond: (id_penonton = 3)
+               Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=162
+ Planning Time: 0.377 ms
+ Execution Time: 0.066 ms
+(25 rows)
+
+Time: 0.801 ms

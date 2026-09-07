@@ -1,0 +1,36 @@
+Timing is on.
+                                                                     QUERY PLAN                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=457.30..463.30 rows=2400 width=86) (actual time=4.344..4.426 rows=2400 loops=1)
+   Sort Key: (COALESCE(sum(s.kontribusi), '0'::numeric)) DESC
+   Sort Method: quicksort  Memory: 340kB
+   Buffers: shared hit=81
+   ->  HashAggregate  (cost=292.56..322.56 rows=2400 width=86) (actual time=3.332..3.667 rows=2400 loops=1)
+         Group Key: jp.id_jadwal_pertunjukan
+         Batches: 1  Memory Usage: 881kB
+         Buffers: shared hit=78
+         ->  Hash Left Join  (cost=145.50..262.93 rows=5926 width=62) (actual time=0.648..2.307 rows=5926 loops=1)
+               Hash Cond: (sp.id_sponsor = s.id_sponsor)
+               Buffers: shared hit=78
+               ->  Hash Right Join  (cost=87.00..188.84 rows=5926 width=58) (actual time=0.398..1.447 rows=5926 loops=1)
+                     Hash Cond: (sp.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                     Buffers: shared hit=60
+                     ->  Seq Scan on sponsor_pertunjukan sp  (cost=0.00..86.26 rows=5926 width=8) (actual time=0.003..0.235 rows=5926 loops=1)
+                           Buffers: shared hit=27
+                     ->  Hash  (cost=57.00..57.00 rows=2400 width=54) (actual time=0.382..0.383 rows=2400 loops=1)
+                           Buckets: 4096  Batches: 1  Memory Usage: 236kB
+                           Buffers: shared hit=33
+                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=54) (actual time=0.004..0.142 rows=2400 loops=1)
+                                 Buffers: shared hit=33
+               ->  Hash  (cost=36.00..36.00 rows=1800 width=12) (actual time=0.237..0.238 rows=1800 loops=1)
+                     Buckets: 2048  Batches: 1  Memory Usage: 94kB
+                     Buffers: shared hit=18
+                     ->  Seq Scan on sponsor s  (cost=0.00..36.00 rows=1800 width=12) (actual time=0.002..0.109 rows=1800 loops=1)
+                           Buffers: shared hit=18
+ Planning:
+   Buffers: shared hit=251
+ Planning Time: 0.518 ms
+ Execution Time: 4.640 ms
+(30 rows)
+
+Time: 5.883 ms

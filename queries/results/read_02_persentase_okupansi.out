@@ -1,0 +1,36 @@
+Timing is on.
+                                                                     QUERY PLAN                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=6172.81..6247.81 rows=30000 width=138) (actual time=15.064..15.218 rows=2400 loops=1)
+   Sort Key: (round((((count(t.id_tiket))::numeric * 100.0) / (lp.kapasitas)::numeric), 2)) DESC
+   Sort Method: quicksort  Memory: 469kB
+   Buffers: shared hit=275
+   ->  HashAggregate  (cost=1110.91..1785.91 rows=30000 width=138) (actual time=13.491..14.217 rows=2400 loops=1)
+         Group Key: jp.id_jadwal_pertunjukan, lp.nama_lokasi, lp.kapasitas
+         Batches: 1  Memory Usage: 1297kB
+         Buffers: shared hit=272
+         ->  Hash Join  (cost=126.00..810.91 rows=30000 width=102) (actual time=0.789..8.766 rows=30000 loops=1)
+               Hash Cond: (jp.id_lokasi = lp.id_lokasi)
+               Buffers: shared hit=272
+               ->  Hash Right Join  (cost=87.00..692.88 rows=30000 width=62) (actual time=0.457..5.521 rows=30000 loops=1)
+                     Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                     Buffers: shared hit=260
+                     ->  Seq Scan on tiket t  (cost=0.00..527.00 rows=30000 width=8) (actual time=0.003..1.392 rows=30000 loops=1)
+                           Buffers: shared hit=227
+                     ->  Hash  (cost=57.00..57.00 rows=2400 width=58) (actual time=0.439..0.440 rows=2400 loops=1)
+                           Buckets: 4096  Batches: 1  Memory Usage: 249kB
+                           Buffers: shared hit=33
+                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=58) (actual time=0.004..0.153 rows=2400 loops=1)
+                                 Buffers: shared hit=33
+               ->  Hash  (cost=24.00..24.00 rows=1200 width=48) (actual time=0.324..0.324 rows=1200 loops=1)
+                     Buckets: 2048  Batches: 1  Memory Usage: 113kB
+                     Buffers: shared hit=12
+                     ->  Seq Scan on lokasi_pertunjukan lp  (cost=0.00..24.00 rows=1200 width=48) (actual time=0.004..0.074 rows=1200 loops=1)
+                           Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=266
+ Planning Time: 0.511 ms
+ Execution Time: 15.651 ms
+(30 rows)
+
+Time: 17.116 ms
