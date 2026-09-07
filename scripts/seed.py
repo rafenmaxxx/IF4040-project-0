@@ -236,7 +236,7 @@ def generate_seed_data(scale_factor=10, seed=42):
         nama = fake.name()
         phone = f"08{random.randint(11, 99)}{random.randint(1000000, 9999999)}"
         kontak_panitia = f"{nama} ({phone})"
-        peran = fake.job()
+        peran = fake.job()[:50]  # kolom panitia.peran adalah VARCHAR(50)
         panitia_list.append((i, kontak_panitia, peran))
 
     # 8. LOKASI PERTUNJUKAN (4 * scale = ~40 records)
