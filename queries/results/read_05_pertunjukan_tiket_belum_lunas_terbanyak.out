@@ -1,32 +1,36 @@
 Timing is on.
-                                                                     QUERY PLAN                                                                      
------------------------------------------------------------------------------------------------------------------------------------------------------
- Limit  (cost=745.20..745.20 rows=1 width=62) (actual time=3.282..3.284 rows=1 loops=1)
-   Buffers: shared hit=263
-   ->  Sort  (cost=745.20..751.20 rows=2400 width=62) (actual time=3.281..3.282 rows=1 loops=1)
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=4906.81..4906.81 rows=1 width=330) (actual time=32.508..32.510 rows=1 loops=1)
+   Buffers: shared hit=2601
+   ->  Sort  (cost=4906.81..4908.90 rows=837 width=330) (actual time=32.506..32.508 rows=1 loops=1)
          Sort Key: (count(t.id_tiket)) DESC
          Sort Method: top-N heapsort  Memory: 25kB
-         Buffers: shared hit=263
-         ->  HashAggregate  (cost=709.20..733.20 rows=2400 width=62) (actual time=2.990..3.121 rows=1607 loops=1)
+         Buffers: shared hit=2601
+         ->  GroupAggregate  (cost=4887.97..4902.62 rows=837 width=330) (actual time=24.939..31.055 rows=16282 loops=1)
                Group Key: jp.id_jadwal_pertunjukan
-               Batches: 1  Memory Usage: 625kB
-               Buffers: shared hit=260
-               ->  Hash Join  (cost=87.00..695.96 rows=2648 width=58) (actual time=0.894..2.506 rows=2648 loops=1)
-                     Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                     Buffers: shared hit=260
-                     ->  Seq Scan on tiket t  (cost=0.00..602.00 rows=2648 width=8) (actual time=0.363..1.608 rows=2648 loops=1)
-                           Filter: ((status_pembayaran)::text = 'Belum Lunas'::text)
-                           Rows Removed by Filter: 27352
-                           Buffers: shared hit=227
-                     ->  Hash  (cost=57.00..57.00 rows=2400 width=54) (actual time=0.515..0.515 rows=2400 loops=1)
-                           Buckets: 4096  Batches: 1  Memory Usage: 236kB
-                           Buffers: shared hit=33
-                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=54) (actual time=0.003..0.227 rows=2400 loops=1)
-                                 Buffers: shared hit=33
+               Buffers: shared hit=2598
+               ->  Sort  (cost=4887.97..4890.07 rows=837 width=326) (actual time=24.933..27.322 rows=26821 loops=1)
+                     Sort Key: jp.id_jadwal_pertunjukan
+                     Sort Method: quicksort  Memory: 3478kB
+                     Buffers: shared hit=2598
+                     ->  Hash Join  (cost=488.87..4847.34 rows=837 width=326) (actual time=6.955..20.123 rows=26821 loops=1)
+                           Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                           Buffers: shared hit=2595
+                           ->  Seq Scan on tiket t  (cost=0.00..4356.27 rows=837 width=8) (actual time=3.147..12.956 rows=26821 loops=1)
+                                 Filter: ((status_pembayaran)::text = 'Belum Lunas'::text)
+                                 Rows Removed by Filter: 273179
+                                 Buffers: shared hit=2263
+                           ->  Hash  (cost=401.72..401.72 rows=6972 width=322) (actual time=3.781..3.782 rows=24000 loops=1)
+                                 Buckets: 32768 (originally 8192)  Batches: 1 (originally 1)  Memory Usage: 2317kB
+                                 Buffers: shared hit=332
+                                 ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..401.72 rows=6972 width=322) (actual time=0.008..1.496 rows=24000 loops=1)
+                                       Buffers: shared hit=332
  Planning:
-   Buffers: shared hit=220
- Planning Time: 0.577 ms
- Execution Time: 3.373 ms
-(26 rows)
+   Buffers: shared hit=196
+ Planning Time: 0.302 ms
+ Execution Time: 32.687 ms
+(29 rows)
 
-Time: 4.922 ms
+Time: 33.882 ms
+Time: 25.760 ms

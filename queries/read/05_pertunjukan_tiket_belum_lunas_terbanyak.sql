@@ -12,3 +12,15 @@ WHERE t.status_pembayaran = 'Belum Lunas'
 GROUP BY jp.id_jadwal_pertunjukan, jp.nama_pertunjukan
 ORDER BY jumlah_belum_lunas DESC
 LIMIT 1;
+
+SELECT
+    jp.id_jadwal_pertunjukan,
+    jp.nama_pertunjukan,
+    COUNT(t.id_tiket) AS jumlah_belum_lunas
+FROM jadwal_pertunjukan jp
+JOIN tiket t ON t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan
+WHERE t.status_pembayaran = 'Belum Lunas'
+GROUP BY jp.id_jadwal_pertunjukan, jp.nama_pertunjukan
+ORDER BY jumlah_belum_lunas DESC
+LIMIT 1
+\g /dev/null

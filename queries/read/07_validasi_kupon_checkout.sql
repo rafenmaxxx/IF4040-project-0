@@ -12,3 +12,10 @@ FROM kupon
 WHERE kode_kupon = :'sample_kode_kupon'
     AND is_redeemed = FALSE
     AND tanggal_kedaluwarsa > CURRENT_DATE;
+
+SELECT id_kupon, kode_kupon, persen_diskon, tanggal_kedaluwarsa, is_redeemed
+FROM kupon
+WHERE kode_kupon = :'sample_kode_kupon'
+    AND is_redeemed = FALSE
+    AND tanggal_kedaluwarsa > CURRENT_DATE
+\g /dev/null

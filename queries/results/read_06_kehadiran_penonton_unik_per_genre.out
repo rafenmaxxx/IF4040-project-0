@@ -1,47 +1,52 @@
 Timing is on.
-                                                                           QUERY PLAN                                                                           
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
- Sort  (cost=8764.26..8764.29 rows=12 width=25) (actual time=38.627..38.633 rows=12 loops=1)
+                                                                               QUERY PLAN                                                                               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=377667.55..377668.05 rows=200 width=134) (actual time=463.616..463.622 rows=12 loops=1)
    Sort Key: (count(t.id_penonton)) DESC
    Sort Method: quicksort  Memory: 25kB
-   Buffers: shared hit=393, temp read=236 written=237
-   ->  GroupAggregate  (cost=8012.30..8764.04 rows=12 width=25) (actual time=26.457..38.608 rows=12 loops=1)
+   Buffers: shared hit=2608 read=1237 dirtied=1237, temp read=2360 written=2374
+   ->  GroupAggregate  (cost=363218.52..377659.91 rows=200 width=134) (actual time=330.203..463.587 rows=12 loops=1)
          Group Key: a.genre
-         Buffers: shared hit=390, temp read=236 written=237
-         ->  Sort  (cost=8012.30..8200.20 rows=75162 width=13) (actual time=25.343..28.820 rows=74948 loops=1)
+         Buffers: shared hit=2605 read=1237 dirtied=1237, temp read=2360 written=2374
+         ->  Sort  (cost=363218.52..366828.36 rows=1443939 width=122) (actual time=318.058..361.667 rows=749179 loops=1)
                Sort Key: a.genre
-               Sort Method: external merge  Disk: 1888kB
-               Buffers: shared hit=387, temp read=236 written=237
-               ->  Hash Join  (cost=458.92..1925.04 rows=75162 width=13) (actual time=2.792..10.771 rows=74948 loops=1)
-                     Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                     Buffers: shared hit=384
-                     ->  Seq Scan on tiket t  (cost=0.00..527.00 rows=30000 width=8) (actual time=0.005..1.425 rows=30000 loops=1)
-                           Buffers: shared hit=227
-                     ->  Hash  (cost=383.75..383.75 rows=6013 width=17) (actual time=2.765..2.768 rows=6013 loops=1)
-                           Buckets: 8192  Batches: 1  Memory Usage: 368kB
-                           Buffers: shared hit=157
-                           ->  Hash Join  (cost=265.00..383.75 rows=6013 width=17) (actual time=0.901..2.229 rows=6013 loops=1)
-                                 Hash Cond: (ap.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                                 Buffers: shared hit=157
-                                 ->  Hash Join  (cost=178.00..280.94 rows=6013 width=13) (actual time=0.600..1.393 rows=6013 loops=1)
-                                       Hash Cond: (ap.id_artis = a.id_artis)
-                                       Buffers: shared hit=124
-                                       ->  Seq Scan on artis_pertunjukan ap  (cost=0.00..87.13 rows=6013 width=8) (actual time=0.003..0.201 rows=6013 loops=1)
-                                             Buffers: shared hit=27
-                                       ->  Hash  (cost=133.00..133.00 rows=3600 width=13) (actual time=0.582..0.583 rows=3600 loops=1)
-                                             Buckets: 4096  Batches: 1  Memory Usage: 200kB
-                                             Buffers: shared hit=97
-                                             ->  Seq Scan on artis a  (cost=0.00..133.00 rows=3600 width=13) (actual time=0.002..0.256 rows=3600 loops=1)
-                                                   Buffers: shared hit=97
-                                 ->  Hash  (cost=57.00..57.00 rows=2400 width=4) (actual time=0.284..0.285 rows=2400 loops=1)
-                                       Buckets: 4096  Batches: 1  Memory Usage: 117kB
-                                       Buffers: shared hit=33
-                                       ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=4) (actual time=0.003..0.122 rows=2400 loops=1)
-                                             Buffers: shared hit=33
+               Sort Method: external merge  Disk: 18880kB
+               Buffers: shared hit=2598 read=1237 dirtied=1237, temp read=2360 written=2374
+               ->  Hash Join  (cost=3476.71..27948.16 rows=1443939 width=122) (actual time=36.470..188.025 rows=749179 loops=1)
+                     Hash Cond: (ap.id_artis = a.id_artis)
+                     Buffers: shared hit=2595 read=1237 dirtied=1237
+                     ->  Hash Join  (cost=2265.38..22945.00 rows=1443939 width=8) (actual time=19.143..95.321 rows=749179 loops=1)
+                           Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                           Buffers: shared hit=2595 read=266 dirtied=266
+                           ->  Seq Scan on tiket t  (cost=0.00..3937.62 rows=167462 width=8) (actual time=0.008..13.860 rows=300000 loops=1)
+                                 Buffers: shared hit=2263
+                           ->  Hash  (cost=1513.93..1513.93 rows=60116 width=12) (actual time=18.977..18.980 rows=59899 loops=1)
+                                 Buckets: 65536  Batches: 1  Memory Usage: 3086kB
+                                 Buffers: shared hit=332 read=266 dirtied=266
+                                 ->  Hash Join  (cost=488.87..1513.93 rows=60116 width=12) (actual time=3.161..13.756 rows=59899 loops=1)
+                                       Hash Cond: (ap.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                                       Buffers: shared hit=332 read=266 dirtied=266
+                                       ->  Seq Scan on artis_pertunjukan ap  (cost=0.00..867.16 rows=60116 width=8) (actual time=0.020..5.103 rows=59899 loops=1)
+                                             Buffers: shared read=266 dirtied=266
+                                       ->  Hash  (cost=401.72..401.72 rows=6972 width=4) (actual time=3.102..3.103 rows=24000 loops=1)
+                                             Buckets: 32768 (originally 8192)  Batches: 1 (originally 1)  Memory Usage: 1100kB
+                                             Buffers: shared hit=332
+                                             ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..401.72 rows=6972 width=4) (actual time=0.014..1.436 rows=24000 loops=1)
+                                                   Buffers: shared hit=332
+                     ->  Hash  (cost=1077.81..1077.81 rows=10681 width=122) (actual time=17.279..17.279 rows=36000 loops=1)
+                           Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2187kB
+                           Buffers: shared read=971 dirtied=971
+                           ->  Seq Scan on artis a  (cost=0.00..1077.81 rows=10681 width=122) (actual time=7.383..13.504 rows=36000 loops=1)
+                                 Buffers: shared read=971 dirtied=971
  Planning:
-   Buffers: shared hit=347
- Planning Time: 0.800 ms
- Execution Time: 38.890 ms
-(41 rows)
+   Buffers: shared hit=251 read=3
+ Planning Time: 0.889 ms
+ JIT:
+   Functions: 33
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 0.588 ms, Inlining 0.000 ms, Optimization 0.433 ms, Emission 7.009 ms, Total 8.030 ms
+ Execution Time: 477.203 ms
+(45 rows)
 
-Time: 40.531 ms
+Time: 479.159 ms
+Time: 338.832 ms

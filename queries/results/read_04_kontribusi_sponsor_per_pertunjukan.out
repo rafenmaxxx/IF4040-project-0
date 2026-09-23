@@ -1,36 +1,37 @@
 Timing is on.
-                                                                     QUERY PLAN                                                                      
------------------------------------------------------------------------------------------------------------------------------------------------------
- Sort  (cost=457.30..463.30 rows=2400 width=86) (actual time=4.344..4.426 rows=2400 loops=1)
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=2749.46..2766.89 rows=6972 width=354) (actual time=53.249..54.228 rows=24000 loops=1)
    Sort Key: (COALESCE(sum(s.kontribusi), '0'::numeric)) DESC
-   Sort Method: quicksort  Memory: 340kB
-   Buffers: shared hit=81
-   ->  HashAggregate  (cost=292.56..322.56 rows=2400 width=86) (actual time=3.332..3.667 rows=2400 loops=1)
+   Sort Method: quicksort  Memory: 3247kB
+   Buffers: shared hit=335 read=443 dirtied=443, temp read=146 written=308
+   ->  HashAggregate  (cost=2217.24..2304.39 rows=6972 width=354) (actual time=40.149..46.263 rows=24000 loops=1)
          Group Key: jp.id_jadwal_pertunjukan
-         Batches: 1  Memory Usage: 881kB
-         Buffers: shared hit=78
-         ->  Hash Left Join  (cost=145.50..262.93 rows=5926 width=62) (actual time=0.648..2.307 rows=5926 loops=1)
+         Batches: 5  Memory Usage: 5681kB  Disk Usage: 1624kB
+         Buffers: shared hit=332 read=443 dirtied=443, temp read=146 written=308
+         ->  Hash Left Join  (cost=733.57..1916.66 rows=60116 width=330) (actual time=8.362..29.068 rows=59963 loops=1)
                Hash Cond: (sp.id_sponsor = s.id_sponsor)
-               Buffers: shared hit=78
-               ->  Hash Right Join  (cost=87.00..188.84 rows=5926 width=58) (actual time=0.398..1.447 rows=5926 loops=1)
+               Buffers: shared hit=332 read=443 dirtied=443
+               ->  Hash Right Join  (cost=488.87..1513.93 rows=60116 width=326) (actual time=4.485..17.697 rows=59963 loops=1)
                      Hash Cond: (sp.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                     Buffers: shared hit=60
-                     ->  Seq Scan on sponsor_pertunjukan sp  (cost=0.00..86.26 rows=5926 width=8) (actual time=0.003..0.235 rows=5926 loops=1)
-                           Buffers: shared hit=27
-                     ->  Hash  (cost=57.00..57.00 rows=2400 width=54) (actual time=0.382..0.383 rows=2400 loops=1)
-                           Buckets: 4096  Batches: 1  Memory Usage: 236kB
-                           Buffers: shared hit=33
-                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=54) (actual time=0.004..0.142 rows=2400 loops=1)
-                                 Buffers: shared hit=33
-               ->  Hash  (cost=36.00..36.00 rows=1800 width=12) (actual time=0.237..0.238 rows=1800 loops=1)
-                     Buckets: 2048  Batches: 1  Memory Usage: 94kB
-                     Buffers: shared hit=18
-                     ->  Seq Scan on sponsor s  (cost=0.00..36.00 rows=1800 width=12) (actual time=0.002..0.109 rows=1800 loops=1)
-                           Buffers: shared hit=18
+                     Buffers: shared hit=332 read=266 dirtied=266
+                     ->  Seq Scan on sponsor_pertunjukan sp  (cost=0.00..867.16 rows=60116 width=8) (actual time=0.031..4.564 rows=59963 loops=1)
+                           Buffers: shared read=266 dirtied=266
+                     ->  Hash  (cost=401.72..401.72 rows=6972 width=322) (actual time=4.430..4.431 rows=24000 loops=1)
+                           Buckets: 32768 (originally 8192)  Batches: 1 (originally 1)  Memory Usage: 2317kB
+                           Buffers: shared hit=332
+                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..401.72 rows=6972 width=322) (actual time=0.009..1.716 rows=24000 loops=1)
+                                 Buffers: shared hit=332
+               ->  Hash  (cost=207.09..207.09 rows=3009 width=12) (actual time=3.867..3.867 rows=18000 loops=1)
+                     Buckets: 32768 (originally 4096)  Batches: 1 (originally 1)  Memory Usage: 1030kB
+                     Buffers: shared read=177 dirtied=177
+                     ->  Seq Scan on sponsor s  (cost=0.00..207.09 rows=3009 width=12) (actual time=0.009..2.208 rows=18000 loops=1)
+                           Buffers: shared read=177 dirtied=177
  Planning:
-   Buffers: shared hit=251
- Planning Time: 0.518 ms
- Execution Time: 4.640 ms
+   Buffers: shared hit=210 read=3
+ Planning Time: 0.473 ms
+ Execution Time: 55.305 ms
 (30 rows)
 
-Time: 5.883 ms
+Time: 56.567 ms
+Time: 40.733 ms

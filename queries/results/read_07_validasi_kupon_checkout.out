@@ -1,15 +1,16 @@
 Timing is on.
-Time: 0.691 ms
+Time: 0.582 ms
                                                          QUERY PLAN                                                          
 -----------------------------------------------------------------------------------------------------------------------------
- Index Scan using kupon_kode_kupon_key on kupon  (cost=0.28..8.31 rows=1 width=25) (actual time=0.009..0.010 rows=1 loops=1)
-   Index Cond: ((kode_kupon)::text = 'HEMATVT-706'::text)
+ Index Scan using kupon_kode_kupon_key on kupon  (cost=0.42..8.44 rows=1 width=79) (actual time=0.031..0.031 rows=1 loops=1)
+   Index Cond: ((kode_kupon)::text = 'FLASHEH-685'::text)
    Filter: ((NOT is_redeemed) AND (tanggal_kedaluwarsa > CURRENT_DATE))
-   Buffers: shared hit=3
+   Buffers: shared hit=1 read=3
  Planning:
-   Buffers: shared hit=18
- Planning Time: 0.073 ms
- Execution Time: 0.016 ms
+   Buffers: shared hit=9
+ Planning Time: 0.067 ms
+ Execution Time: 0.039 ms
 (8 rows)
 
-Time: 0.398 ms
+Time: 0.426 ms
+Time: 0.318 ms

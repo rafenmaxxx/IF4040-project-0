@@ -1,36 +1,39 @@
 Timing is on.
-                                                                     QUERY PLAN                                                                      
------------------------------------------------------------------------------------------------------------------------------------------------------
- Sort  (cost=6172.81..6247.81 rows=30000 width=138) (actual time=15.064..15.218 rows=2400 loops=1)
+                                                                                       QUERY PLAN                                                                                        
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=135790.37..136209.02 rows=167462 width=584) (actual time=252.007..253.815 rows=24000 loops=1)
    Sort Key: (round((((count(t.id_tiket))::numeric * 100.0) / (lp.kapasitas)::numeric), 2)) DESC
-   Sort Method: quicksort  Memory: 469kB
-   Buffers: shared hit=275
-   ->  HashAggregate  (cost=1110.91..1785.91 rows=30000 width=138) (actual time=13.491..14.217 rows=2400 loops=1)
+   Sort Method: external merge  Disk: 3016kB
+   Buffers: shared hit=371415 read=670 dirtied=120, temp read=377 written=378
+   ->  GroupAggregate  (cost=4.76..34257.13 rows=167462 width=584) (actual time=25.240..241.235 rows=24000 loops=1)
          Group Key: jp.id_jadwal_pertunjukan, lp.nama_lokasi, lp.kapasitas
-         Batches: 1  Memory Usage: 1297kB
-         Buffers: shared hit=272
-         ->  Hash Join  (cost=126.00..810.91 rows=30000 width=102) (actual time=0.789..8.766 rows=30000 loops=1)
-               Hash Cond: (jp.id_lokasi = lp.id_lokasi)
-               Buffers: shared hit=272
-               ->  Hash Right Join  (cost=87.00..692.88 rows=30000 width=62) (actual time=0.457..5.521 rows=30000 loops=1)
-                     Hash Cond: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                     Buffers: shared hit=260
-                     ->  Seq Scan on tiket t  (cost=0.00..527.00 rows=30000 width=8) (actual time=0.003..1.392 rows=30000 loops=1)
-                           Buffers: shared hit=227
-                     ->  Hash  (cost=57.00..57.00 rows=2400 width=58) (actual time=0.439..0.440 rows=2400 loops=1)
-                           Buckets: 4096  Batches: 1  Memory Usage: 249kB
-                           Buffers: shared hit=33
-                           ->  Seq Scan on jadwal_pertunjukan jp  (cost=0.00..57.00 rows=2400 width=58) (actual time=0.004..0.153 rows=2400 loops=1)
-                                 Buffers: shared hit=33
-               ->  Hash  (cost=24.00..24.00 rows=1200 width=48) (actual time=0.324..0.324 rows=1200 loops=1)
-                     Buckets: 2048  Batches: 1  Memory Usage: 113kB
-                     Buffers: shared hit=12
-                     ->  Seq Scan on lokasi_pertunjukan lp  (cost=0.00..24.00 rows=1200 width=48) (actual time=0.004..0.074 rows=1200 loops=1)
-                           Buffers: shared hit=12
+         Buffers: shared hit=371412 read=670 dirtied=120
+         ->  Incremental Sort  (cost=4.76..28814.61 rows=167462 width=548) (actual time=25.218..211.889 rows=300000 loops=1)
+               Sort Key: jp.id_jadwal_pertunjukan, lp.nama_lokasi, lp.kapasitas
+               Presorted Key: jp.id_jadwal_pertunjukan
+               Full-sort Groups: 7834  Sort Method: quicksort  Average Memory: 31kB  Peak Memory: 31kB
+               Buffers: shared hit=371412 read=670 dirtied=120
+               ->  Merge Left Join  (cost=0.98..19877.87 rows=167462 width=548) (actual time=25.027..159.730 rows=300000 loops=1)
+                     Merge Cond: (jp.id_jadwal_pertunjukan = t.id_jadwal_pertunjukan)
+                     Buffers: shared hit=371409 read=670 dirtied=120
+                     ->  Nested Loop  (cost=0.56..4398.82 rows=6972 width=544) (actual time=24.995..50.390 rows=24000 loops=1)
+                           Buffers: shared hit=72178 read=221 dirtied=120
+                           ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan jp  (cost=0.28..1704.86 rows=6972 width=326) (actual time=0.032..4.043 rows=24000 loops=1)
+                                 Buffers: shared hit=332 read=67
+                           ->  Index Scan using lokasi_pertunjukan_pkey on lokasi_pertunjukan lp  (cost=0.28..0.39 rows=1 width=226) (actual time=0.001..0.001 rows=1 loops=24000)
+                                 Index Cond: (id_lokasi = jp.id_lokasi)
+                                 Buffers: shared hit=71846 read=154 dirtied=120
+                     ->  Index Scan using idx_tiket_jadwal on tiket t  (cost=0.42..13368.35 rows=167462 width=8) (actual time=0.026..82.488 rows=300000 loops=1)
+                           Buffers: shared hit=299231 read=449
  Planning:
-   Buffers: shared hit=266
- Planning Time: 0.511 ms
- Execution Time: 15.651 ms
-(30 rows)
+   Buffers: shared hit=223 read=1
+ Planning Time: 0.363 ms
+ JIT:
+   Functions: 16
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 0.587 ms, Inlining 0.000 ms, Optimization 2.777 ms, Emission 22.127 ms, Total 25.491 ms
+ Execution Time: 515.231 ms
+(32 rows)
 
-Time: 17.116 ms
+Time: 516.675 ms
+Time: 183.805 ms

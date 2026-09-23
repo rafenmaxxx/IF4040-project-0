@@ -1,30 +1,31 @@
 Timing is on.
-                                                                 QUERY PLAN                                                                  
----------------------------------------------------------------------------------------------------------------------------------------------
- Limit  (cost=1043.51..1043.54 rows=10 width=95) (actual time=10.160..10.163 rows=10 loops=1)
-   Buffers: shared hit=198
-   ->  Sort  (cost=1043.51..1054.76 rows=4500 width=95) (actual time=10.159..10.161 rows=10 loops=1)
+                                                                   QUERY PLAN                                                                    
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=9439.59..9439.62 rows=10 width=262) (actual time=149.914..149.918 rows=10 loops=1)
+   Buffers: shared hit=3 read=1954 dirtied=1954, temp read=1221 written=2337
+   ->  Sort  (cost=9439.59..9481.13 rows=16616 width=262) (actual time=149.913..149.916 rows=10 loops=1)
          Sort Key: (sum((inf.jumlah_item * im.harga_satuan))) DESC
          Sort Method: top-N heapsort  Memory: 27kB
-         Buffers: shared hit=198
-         ->  HashAggregate  (cost=890.02..946.27 rows=4500 width=95) (actual time=8.471..9.421 rows=4480 loops=1)
+         Buffers: shared hit=3 read=1954 dirtied=1954, temp read=1221 written=2337
+         ->  HashAggregate  (cost=8872.83..9080.53 rows=16616 width=262) (actual time=128.187..145.376 rows=44870 loops=1)
                Group Key: im.id_item
-               Batches: 1  Memory Usage: 1489kB
-               Buffers: shared hit=195
-               ->  Hash Join  (cost=154.25..627.61 rows=26241 width=67) (actual time=0.571..4.901 rows=26241 loops=1)
+               Batches: 5  Memory Usage: 7217kB  Disk Usage: 11448kB
+               Buffers: shared read=1954 dirtied=1954, temp read=1221 written=2337
+               ->  Hash Join  (cost=909.86..5980.11 rows=289272 width=234) (actual time=8.421..73.378 rows=262167 loops=1)
                      Hash Cond: (inf.id_item = im.id_item)
-                     Buffers: shared hit=195
-                     ->  Seq Scan on info_merch inf  (cost=0.00..404.41 rows=26241 width=8) (actual time=0.002..1.056 rows=26241 loops=1)
-                           Buffers: shared hit=142
-                     ->  Hash  (cost=98.00..98.00 rows=4500 width=63) (actual time=0.549..0.550 rows=4500 loops=1)
-                           Buckets: 8192  Batches: 1  Memory Usage: 501kB
-                           Buffers: shared hit=53
-                           ->  Seq Scan on item_merch im  (cost=0.00..98.00 rows=4500 width=63) (actual time=0.004..0.171 rows=4500 loops=1)
-                                 Buffers: shared hit=53
+                     Buffers: shared read=1954 dirtied=1954
+                     ->  Seq Scan on info_merch inf  (cost=0.00..4310.72 rows=289272 width=8) (actual time=0.012..23.305 rows=262167 loops=1)
+                           Buffers: shared read=1418 dirtied=1418
+                     ->  Hash  (cost=702.16..702.16 rows=16616 width=230) (actual time=8.339..8.340 rows=45000 loops=1)
+                           Buckets: 65536 (originally 32768)  Batches: 1 (originally 1)  Memory Usage: 4935kB
+                           Buffers: shared read=536 dirtied=536
+                           ->  Seq Scan on item_merch im  (cost=0.00..702.16 rows=16616 width=230) (actual time=0.008..4.271 rows=45000 loops=1)
+                                 Buffers: shared read=536 dirtied=536
  Planning:
-   Buffers: shared hit=183
- Planning Time: 0.363 ms
- Execution Time: 10.339 ms
+   Buffers: shared hit=162 read=3
+ Planning Time: 0.312 ms
+ Execution Time: 150.949 ms
 (24 rows)
 
-Time: 11.555 ms
+Time: 151.966 ms
+Time: 86.602 ms

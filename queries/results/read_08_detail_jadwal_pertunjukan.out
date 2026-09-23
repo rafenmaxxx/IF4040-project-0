@@ -1,94 +1,119 @@
 Timing is on.
-Time: 2.455 ms
-                                                                                QUERY PLAN                                                                                
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- GroupAggregate  (cost=61.02..194.96 rows=1 width=290) (actual time=0.260..0.264 rows=1 loops=1)
+Time: 14.491 ms
+                                                                               QUERY PLAN                                                                                
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=1698.93..5657.16 rows=1 width=736) (actual time=14.672..14.679 rows=1 loops=1)
    Group Key: jp.id_jadwal_pertunjukan, lp.id_lokasi
-   Buffers: shared hit=91
-   ->  Sort  (cost=61.02..61.02 rows=1 width=126) (actual time=0.088..0.090 rows=18 loops=1)
+   Buffers: shared hit=1170 read=841 dirtied=831
+   ->  Sort  (cost=1698.93..1698.93 rows=1 width=572) (actual time=0.084..0.085 rows=8 loops=1)
          Sort Key: lp.id_lokasi
-         Sort Method: quicksort  Memory: 27kB
-         Buffers: shared hit=27
-         ->  Nested Loop Left Join  (cost=4.94..61.01 rows=1 width=126) (actual time=0.027..0.067 rows=18 loops=1)
+         Sort Method: quicksort  Memory: 26kB
+         Buffers: shared hit=20
+         ->  Nested Loop Left Join  (cost=19.47..1698.92 rows=1 width=572) (actual time=0.037..0.067 rows=8 loops=1)
                Join Filter: (t.id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-               Buffers: shared hit=24
-               ->  Nested Loop  (cost=0.56..16.61 rows=1 width=122) (actual time=0.010..0.011 rows=1 loops=1)
+               Buffers: shared hit=17
+               ->  Nested Loop  (cost=0.56..16.60 rows=1 width=568) (actual time=0.021..0.022 rows=1 loops=1)
                      Buffers: shared hit=6
-                     ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan jp  (cost=0.28..8.30 rows=1 width=78) (actual time=0.005..0.005 rows=1 loops=1)
-                           Index Cond: (id_jadwal_pertunjukan = 273)
+                     ->  Index Scan using jadwal_pertunjukan_pkey on jadwal_pertunjukan jp  (cost=0.28..8.30 rows=1 width=346) (actual time=0.010..0.011 rows=1 loops=1)
+                           Index Cond: (id_jadwal_pertunjukan = 5468)
                            Buffers: shared hit=3
-                     ->  Index Scan using lokasi_pertunjukan_pkey on lokasi_pertunjukan lp  (cost=0.28..8.29 rows=1 width=48) (actual time=0.004..0.004 rows=1 loops=1)
+                     ->  Index Scan using lokasi_pertunjukan_pkey on lokasi_pertunjukan lp  (cost=0.28..8.30 rows=1 width=226) (actual time=0.009..0.009 rows=1 loops=1)
                            Index Cond: (id_lokasi = jp.id_lokasi)
                            Buffers: shared hit=3
-               ->  Bitmap Heap Scan on tiket t  (cost=4.38..44.25 rows=12 width=8) (actual time=0.015..0.051 rows=18 loops=1)
-                     Recheck Cond: (id_jadwal_pertunjukan = 273)
-                     Heap Blocks: exact=16
-                     Buffers: shared hit=18
-                     ->  Bitmap Index Scan on idx_tiket_jadwal  (cost=0.00..4.38 rows=12 width=0) (actual time=0.011..0.011 rows=18 loops=1)
-                           Index Cond: (id_jadwal_pertunjukan = 273)
-                           Buffers: shared hit=2
+               ->  Bitmap Heap Scan on tiket t  (cost=18.91..1671.85 rows=837 width=8) (actual time=0.014..0.041 rows=8 loops=1)
+                     Recheck Cond: (id_jadwal_pertunjukan = 5468)
+                     Heap Blocks: exact=8
+                     Buffers: shared hit=11
+                     ->  Bitmap Index Scan on idx_tiket_jadwal  (cost=0.00..18.70 rows=837 width=0) (actual time=0.009..0.009 rows=8 loops=1)
+                           Index Cond: (id_jadwal_pertunjukan = 5468)
+                           Buffers: shared hit=3
    SubPlan 1
-     ->  Aggregate  (cost=4.35..4.36 rows=1 width=32) (actual time=0.015..0.015 rows=1 loops=1)
-           Buffers: shared hit=3
-           ->  Index Only Scan using fasilitas_pkey on fasilitas f  (cost=0.28..4.33 rows=3 width=22) (actual time=0.010..0.011 rows=3 loops=1)
-                 Index Cond: (id_lokasi = lp.id_lokasi)
-                 Heap Fetches: 0
-                 Buffers: shared hit=3
+     ->  Aggregate  (cost=137.01..137.02 rows=1 width=32) (actual time=0.022..0.023 rows=1 loops=1)
+           Buffers: shared read=3 dirtied=1
+           ->  Bitmap Heap Scan on fasilitas f  (cost=8.66..136.88 rows=48 width=218) (actual time=0.019..0.019 rows=3 loops=1)
+                 Recheck Cond: (id_lokasi = lp.id_lokasi)
+                 Heap Blocks: exact=1
+                 Buffers: shared read=3 dirtied=1
+                 ->  Bitmap Index Scan on fasilitas_pkey  (cost=0.00..8.64 rows=48 width=0) (actual time=0.011..0.012 rows=3 loops=1)
+                       Index Cond: (id_lokasi = lp.id_lokasi)
+                       Buffers: shared read=2
    SubPlan 2
-     ->  Aggregate  (cost=29.24..29.25 rows=1 width=32) (actual time=0.029..0.030 rows=1 loops=1)
-           Buffers: shared hit=15
-           ->  Nested Loop  (cost=0.56..29.23 rows=3 width=18) (actual time=0.019..0.028 rows=4 loops=1)
-                 Buffers: shared hit=15
-                 ->  Index Only Scan using artis_pertunjukan_pkey on artis_pertunjukan ap2  (cost=0.28..4.33 rows=3 width=4) (actual time=0.008..0.008 rows=4 loops=1)
-                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                       Heap Fetches: 0
-                       Buffers: shared hit=3
-                 ->  Index Scan using artis_pkey on artis a  (cost=0.28..8.30 rows=1 width=22) (actual time=0.004..0.004 rows=1 loops=4)
-                       Index Cond: (id_artis = ap2.id_artis)
-                       Buffers: shared hit=12
+     ->  Aggregate  (cost=1399.57..1399.58 rows=1 width=32) (actual time=3.913..3.915 rows=1 loops=1)
+           Buffers: shared hit=972 read=2
+           ->  Hash Join  (cost=292.96..1398.81 rows=301 width=218) (actual time=0.064..3.910 rows=4 loops=1)
+                 Hash Cond: (a.id_artis = ap2.id_artis)
+                 Buffers: shared hit=972 read=2
+                 ->  Seq Scan on artis a  (cost=0.00..1077.81 rows=10681 width=222) (actual time=0.003..2.400 rows=36000 loops=1)
+                       Buffers: shared hit=971
+                 ->  Hash  (cost=289.19..289.19 rows=301 width=4) (actual time=0.015..0.016 rows=4 loops=1)
+                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                       Buffers: shared hit=1 read=2
+                       ->  Bitmap Heap Scan on artis_pertunjukan ap2  (cost=6.62..289.19 rows=301 width=4) (actual time=0.012..0.012 rows=4 loops=1)
+                             Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                             Heap Blocks: exact=1
+                             Buffers: shared hit=1 read=2
+                             ->  Bitmap Index Scan on artis_pertunjukan_pkey  (cost=0.00..6.55 rows=301 width=0) (actual time=0.010..0.010 rows=4 loops=1)
+                                   Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                                   Buffers: shared read=2
    SubPlan 3
-     ->  Aggregate  (cost=29.24..29.25 rows=1 width=32) (actual time=0.016..0.017 rows=1 loops=1)
-           Buffers: shared hit=12
-           ->  Nested Loop  (cost=0.56..29.23 rows=3 width=35) (actual time=0.010..0.015 rows=3 loops=1)
-                 Buffers: shared hit=12
-                 ->  Index Only Scan using vendor_pertunjukan_pkey on vendor_pertunjukan vp  (cost=0.28..4.33 rows=3 width=4) (actual time=0.005..0.005 rows=3 loops=1)
-                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                       Heap Fetches: 0
-                       Buffers: shared hit=3
-                 ->  Index Scan using vendor_pkey on vendor v  (cost=0.28..8.30 rows=1 width=39) (actual time=0.003..0.003 rows=1 loops=3)
-                       Index Cond: (id_vendor = vp.id_vendor)
-                       Buffers: shared hit=9
+     ->  Aggregate  (cost=750.89..750.90 rows=1 width=32) (actual time=3.458..3.458 rows=1 loops=1)
+           Buffers: shared read=332 dirtied=330
+           ->  Hash Join  (cost=350.37..749.99 rows=360 width=218) (actual time=1.968..3.454 rows=2 loops=1)
+                 Hash Cond: (v.id_vendor = vp.id_vendor)
+                 Buffers: shared read=332 dirtied=330
+                 ->  Seq Scan on vendor v  (cost=0.00..384.93 rows=5593 width=222) (actual time=0.016..2.462 rows=24000 loops=1)
+                       Buffers: shared read=329 dirtied=329
+                 ->  Hash  (cost=345.87..345.87 rows=360 width=4) (actual time=0.027..0.027 rows=2 loops=1)
+                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                       Buffers: shared read=3 dirtied=1
+                       ->  Bitmap Heap Scan on vendor_pertunjukan vp  (cost=7.08..345.87 rows=360 width=4) (actual time=0.022..0.023 rows=2 loops=1)
+                             Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                             Heap Blocks: exact=1
+                             Buffers: shared read=3 dirtied=1
+                             ->  Bitmap Index Scan on vendor_pertunjukan_pkey  (cost=0.00..6.99 rows=360 width=0) (actual time=0.012..0.012 rows=2 loops=1)
+                                   Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                                   Buffers: shared read=2
    SubPlan 4
-     ->  Aggregate  (cost=20.92..20.93 rows=1 width=32) (actual time=0.059..0.059 rows=1 loops=1)
-           Buffers: shared hit=12
-           ->  Nested Loop  (cost=0.56..20.92 rows=2 width=21) (actual time=0.014..0.054 rows=3 loops=1)
-                 Buffers: shared hit=12
-                 ->  Index Only Scan using sponsor_pertunjukan_pkey on sponsor_pertunjukan sp  (cost=0.28..4.32 rows=2 width=4) (actual time=0.006..0.007 rows=3 loops=1)
-                       Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                       Heap Fetches: 0
-                       Buffers: shared hit=3
-                 ->  Index Scan using sponsor_pkey on sponsor s  (cost=0.28..8.29 rows=1 width=25) (actual time=0.015..0.015 rows=1 loops=3)
-                       Index Cond: (id_sponsor = sp.id_sponsor)
-                       Buffers: shared hit=9
+     ->  Aggregate  (cost=508.71..508.72 rows=1 width=32) (actual time=1.545..1.546 rows=1 loops=1)
+           Buffers: shared hit=178 read=2
+           ->  Hash Join  (cost=292.96..507.96 rows=301 width=218) (actual time=1.458..1.543 rows=1 loops=1)
+                 Hash Cond: (s.id_sponsor = sp.id_sponsor)
+                 Buffers: shared hit=178 read=2
+                 ->  Seq Scan on sponsor s  (cost=0.00..207.09 rows=3009 width=222) (actual time=0.004..0.843 rows=18000 loops=1)
+                       Buffers: shared hit=177
+                 ->  Hash  (cost=289.19..289.19 rows=301 width=4) (actual time=0.019..0.020 rows=1 loops=1)
+                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                       Buffers: shared hit=1 read=2
+                       ->  Bitmap Heap Scan on sponsor_pertunjukan sp  (cost=6.62..289.19 rows=301 width=4) (actual time=0.016..0.017 rows=1 loops=1)
+                             Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                             Heap Blocks: exact=1
+                             Buffers: shared hit=1 read=2
+                             ->  Bitmap Index Scan on sponsor_pertunjukan_pkey  (cost=0.00..6.55 rows=301 width=0) (actual time=0.011..0.011 rows=1 loops=1)
+                                   Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                                   Buffers: shared read=2
    SubPlan 5
-     ->  Aggregate  (cost=50.12..50.13 rows=1 width=32) (actual time=0.040..0.041 rows=1 loops=1)
-           Buffers: shared hit=22
-           ->  Nested Loop  (cost=4.60..50.11 rows=4 width=32) (actual time=0.023..0.038 rows=5 loops=1)
-                 Buffers: shared hit=22
-                 ->  Bitmap Heap Scan on panitia_pertunjukan pp  (cost=4.32..16.90 rows=4 width=4) (actual time=0.014..0.022 rows=5 loops=1)
-                       Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                       Heap Blocks: exact=5
-                       Buffers: shared hit=7
-                       ->  Bitmap Index Scan on idx_panitia_pertunjukan_jadwal  (cost=0.00..4.32 rows=4 width=0) (actual time=0.011..0.011 rows=5 loops=1)
-                             Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
-                             Buffers: shared hit=2
-                 ->  Index Scan using panitia_pkey on panitia pn  (cost=0.28..8.30 rows=1 width=36) (actual time=0.002..0.002 rows=1 loops=5)
-                       Index Cond: (id_panitia = pp.id_panitia)
-                       Buffers: shared hit=15
+     ->  Aggregate  (cost=1161.98..1161.99 rows=1 width=32) (actual time=5.636..5.636 rows=1 loops=1)
+           Buffers: shared read=502 dirtied=500
+           ->  Hash Join  (cost=526.85..1160.63 rows=540 width=218) (actual time=0.150..5.633 rows=4 loops=1)
+                 Hash Cond: (pn.id_panitia = pp.id_panitia)
+                 Buffers: shared read=502 dirtied=500
+                 ->  Seq Scan on panitia pn  (cost=0.00..605.12 rows=10912 width=222) (actual time=0.010..3.830 rows=45000 loops=1)
+                       Buffers: shared read=496 dirtied=496
+                 ->  Hash  (cost=520.10..520.10 rows=540 width=4) (actual time=0.043..0.043 rows=4 loops=1)
+                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                       Buffers: shared read=6 dirtied=4
+                       ->  Bitmap Heap Scan on panitia_pertunjukan pp  (cost=12.48..520.10 rows=540 width=4) (actual time=0.022..0.038 rows=4 loops=1)
+                             Recheck Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                             Heap Blocks: exact=4
+                             Buffers: shared read=6 dirtied=4
+                             ->  Bitmap Index Scan on idx_panitia_pertunjukan_jadwal  (cost=0.00..12.34 rows=540 width=0) (actual time=0.014..0.014 rows=4 loops=1)
+                                   Index Cond: (id_jadwal_pertunjukan = jp.id_jadwal_pertunjukan)
+                                   Buffers: shared read=2
  Planning:
-   Buffers: shared hit=452
- Planning Time: 1.053 ms
- Execution Time: 0.397 ms
-(87 rows)
+   Buffers: shared hit=310 read=7
+ Planning Time: 0.712 ms
+ Execution Time: 14.797 ms
+(111 rows)
 
-Time: 2.204 ms
+Time: 16.441 ms
+Time: 6.286 ms

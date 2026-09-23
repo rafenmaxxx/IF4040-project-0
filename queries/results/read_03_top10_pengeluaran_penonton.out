@@ -1,48 +1,52 @@
 Timing is on.
-                                                                       QUERY PLAN                                                                       
---------------------------------------------------------------------------------------------------------------------------------------------------------
- Limit  (cost=2549.29..2549.31 rows=10 width=54) (actual time=22.588..22.592 rows=10 loops=1)
-   Buffers: shared hit=577
-   ->  Sort  (cost=2549.29..2586.79 rows=15000 width=54) (actual time=22.587..22.590 rows=10 loops=1)
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=11062.27..11062.30 rows=10 width=254) (actual time=274.073..274.078 rows=10 loops=1)
+   Buffers: shared hit=2269 read=3475 dirtied=3475, temp read=1036 written=1202
+   ->  Sort  (cost=11062.27..11156.84 rows=37828 width=254) (actual time=274.072..274.076 rows=10 loops=1)
          Sort Key: ((COALESCE(pt.total_tiket, '0'::numeric) + COALESCE(pm.total_merch, '0'::numeric))) DESC
          Sort Method: top-N heapsort  Memory: 26kB
-         Buffers: shared hit=577
-         ->  Hash Left Join  (cost=1689.87..2225.14 rows=15000 width=54) (actual time=15.479..20.931 rows=15000 loops=1)
+         Buffers: shared hit=2269 read=3475 dirtied=3475, temp read=1036 written=1202
+         ->  Hash Left Join  (cost=6871.36..10244.82 rows=37828 width=254) (actual time=182.452..258.990 rows=150000 loops=1)
                Hash Cond: (p.id_penonton = pm.id_penonton)
-               Buffers: shared hit=574
-               ->  Hash Left Join  (cost=1190.68..1649.07 rows=15000 width=54) (actual time=10.599..13.529 rows=15000 loops=1)
+               Buffers: shared hit=2266 read=3475 dirtied=3475, temp read=1036 written=1202
+               ->  Hash Left Join  (cost=4410.08..7589.67 rows=37828 width=254) (actual time=134.434..182.759 rows=150000 loops=1)
                      Hash Cond: (p.id_penonton = pt.id_penonton)
-                     Buffers: shared hit=496
-                     ->  Seq Scan on penonton p  (cost=0.00..419.00 rows=15000 width=22) (actual time=0.008..0.627 rows=15000 loops=1)
-                           Buffers: shared hit=269
-                     ->  Hash  (cost=1029.28..1029.28 rows=12912 width=36) (actual time=10.543..10.544 rows=12561 loops=1)
-                           Buckets: 16384  Batches: 1  Memory Usage: 668kB
-                           Buffers: shared hit=227
-                           ->  Subquery Scan on pt  (cost=738.76..1029.28 rows=12912 width=36) (actual time=6.825..9.111 rows=12561 loops=1)
-                                 Buffers: shared hit=227
-                                 ->  HashAggregate  (cost=738.76..900.16 rows=12912 width=36) (actual time=6.825..8.278 rows=12561 loops=1)
+                     Buffers: shared hit=2266 read=2702 dirtied=2702, temp read=871 written=876
+                     ->  Seq Scan on penonton p  (cost=0.00..3080.28 rows=37828 width=222) (actual time=0.009..23.987 rows=150000 loops=1)
+                           Buffers: shared read=2702 dirtied=2702
+                     ->  Hash  (cost=4407.62..4407.62 rows=197 width=36) (actual time=134.415..134.417 rows=125885 loops=1)
+                           Buckets: 131072 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 6434kB
+                           Buffers: shared hit=2266, temp read=871 written=876
+                           ->  Subquery Scan on pt  (cost=4396.91..4407.62 rows=197 width=36) (actual time=66.832..124.245 rows=125885 loops=1)
+                                 Buffers: shared hit=2266, temp read=871 written=876
+                                 ->  GroupAggregate  (cost=4396.91..4405.65 rows=197 width=36) (actual time=66.831..118.001 rows=125885 loops=1)
                                        Group Key: tiket.id_penonton
-                                       Batches: 1  Memory Usage: 2449kB
-                                       Buffers: shared hit=227
-                                       ->  Seq Scan on tiket  (cost=0.00..602.00 rows=27352 width=12) (actual time=0.005..2.135 rows=27352 loops=1)
-                                             Filter: ((status_pembayaran)::text = 'Lunas'::text)
-                                             Rows Removed by Filter: 2648
-                                             Buffers: shared hit=227
-               ->  Hash  (cost=405.01..405.01 rows=7534 width=36) (actual time=4.833..4.834 rows=7534 loops=1)
-                     Buckets: 8192  Batches: 1  Memory Usage: 388kB
-                     Buffers: shared hit=78
-                     ->  Subquery Scan on pm  (cost=235.50..405.01 rows=7534 width=36) (actual time=2.812..4.125 rows=7534 loops=1)
-                           Buffers: shared hit=78
-                           ->  HashAggregate  (cost=235.50..329.68 rows=7534 width=36) (actual time=2.811..3.719 rows=7534 loops=1)
+                                       Buffers: shared hit=2266, temp read=871 written=876
+                                       ->  Sort  (cost=4396.91..4399.00 rows=837 width=12) (actual time=66.822..83.929 rows=273179 loops=1)
+                                             Sort Key: tiket.id_penonton
+                                             Sort Method: external merge  Disk: 6968kB
+                                             Buffers: shared hit=2266, temp read=871 written=876
+                                             ->  Seq Scan on tiket  (cost=0.00..4356.27 rows=837 width=12) (actual time=0.005..22.144 rows=273179 loops=1)
+                                                   Filter: ((status_pembayaran)::text = 'Lunas'::text)
+                                                   Rows Removed by Filter: 26821
+                                                   Buffers: shared hit=2263
+               ->  Hash  (cost=2458.78..2458.78 rows=200 width=36) (actual time=48.006..48.007 rows=75482 loops=1)
+                     Buckets: 131072 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 4268kB
+                     Buffers: shared read=773 dirtied=773, temp read=165 written=326
+                     ->  Subquery Scan on pm  (cost=2454.28..2458.78 rows=200 width=36) (actual time=25.721..42.985 rows=75482 loops=1)
+                           Buffers: shared read=773 dirtied=773, temp read=165 written=326
+                           ->  HashAggregate  (cost=2454.28..2456.78 rows=200 width=36) (actual time=25.720..39.195 rows=75482 loops=1)
                                  Group Key: transaksi_merch.id_penonton
-                                 Batches: 1  Memory Usage: 1681kB
-                                 Buffers: shared hit=78
-                                 ->  Seq Scan on transaksi_merch  (cost=0.00..183.00 rows=10500 width=12) (actual time=0.008..0.431 rows=10500 loops=1)
-                                       Buffers: shared hit=78
+                                 Batches: 5  Memory Usage: 8257kB  Disk Usage: 1672kB
+                                 Buffers: shared read=773 dirtied=773, temp read=165 written=326
+                                 ->  Seq Scan on transaksi_merch  (cost=0.00..1893.85 rows=112085 width=12) (actual time=0.033..8.314 rows=105000 loops=1)
+                                       Buffers: shared read=773 dirtied=773
  Planning:
-   Buffers: shared hit=251
- Planning Time: 0.460 ms
- Execution Time: 22.993 ms
-(42 rows)
+   Buffers: shared hit=224 read=6
+ Planning Time: 0.437 ms
+ Execution Time: 275.326 ms
+(45 rows)
 
-Time: 24.403 ms
+Time: 276.764 ms
+Time: 189.522 ms
