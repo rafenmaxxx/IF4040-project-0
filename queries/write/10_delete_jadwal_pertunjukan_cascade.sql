@@ -14,3 +14,10 @@ DELETE FROM jadwal_pertunjukan
 WHERE id_jadwal_pertunjukan = :j_id_jadwal_pertunjukan;
 
 ROLLBACK;
+
+BEGIN;
+
+DELETE FROM jadwal_pertunjukan
+WHERE id_jadwal_pertunjukan = :j_id_jadwal_pertunjukan;
+
+ROLLBACK;

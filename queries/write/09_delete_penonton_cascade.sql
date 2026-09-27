@@ -16,3 +16,10 @@ DELETE FROM penonton
 WHERE id_penonton = :p_id_penonton;
 
 ROLLBACK;
+
+BEGIN;
+
+DELETE FROM penonton
+WHERE id_penonton = :p_id_penonton;
+
+ROLLBACK;

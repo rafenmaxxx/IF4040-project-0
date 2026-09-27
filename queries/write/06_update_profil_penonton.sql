@@ -12,3 +12,12 @@ SET no_telp = '081298765432',
 WHERE id_penonton = :p_id_penonton;
 
 ROLLBACK;
+
+BEGIN;
+
+UPDATE penonton
+SET no_telp = '081298765432',
+    alamat = 'Jl. Perubahan Alamat No. 99, Jakarta'
+WHERE id_penonton = :p_id_penonton;
+
+ROLLBACK;

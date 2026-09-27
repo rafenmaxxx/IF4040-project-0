@@ -1,19 +1,25 @@
 Timing is on.
-Time: 8.118 ms
+Time: 8.968 ms
 BEGIN
-Time: 0.121 ms
+Time: 0.109 ms
                                                        QUERY PLAN                                                        
 -------------------------------------------------------------------------------------------------------------------------
- Update on tiket  (cost=0.42..8.44 rows=0 width=0) (actual time=0.830..0.831 rows=0 loops=1)
-   Buffers: shared hit=59 read=3 dirtied=3
-   ->  Index Scan using tiket_pkey on tiket  (cost=0.42..8.44 rows=1 width=64) (actual time=0.007..0.008 rows=1 loops=1)
+ Update on tiket  (cost=0.42..8.44 rows=0 width=0) (actual time=1.124..1.125 rows=0 loops=1)
+   Buffers: shared hit=58 read=4 dirtied=3
+   ->  Index Scan using tiket_pkey on tiket  (cost=0.42..8.44 rows=1 width=64) (actual time=0.010..0.011 rows=1 loops=1)
          Index Cond: (id_tiket = 75002)
          Buffers: shared hit=4
- Planning Time: 0.043 ms
- Trigger trg_redeem_kupon_tiket: time=0.155 calls=1
- Execution Time: 0.864 ms
+ Planning Time: 0.081 ms
+ Trigger trg_redeem_kupon_tiket: time=0.238 calls=1
+ Execution Time: 1.196 ms
 (8 rows)
 
-Time: 1.132 ms
+Time: 1.667 ms
 ROLLBACK
-Time: 0.129 ms
+Time: 0.120 ms
+BEGIN
+Time: 0.083 ms
+UPDATE 1
+Time: 0.230 ms
+ROLLBACK
+Time: 0.117 ms

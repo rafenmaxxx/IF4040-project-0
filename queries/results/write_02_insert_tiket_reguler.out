@@ -1,25 +1,31 @@
 Timing is on.
-Time: 0.601 ms
-Time: 0.213 ms
-Time: 0.243 ms
+Time: 0.812 ms
+Time: 0.408 ms
+Time: 0.358 ms
 BEGIN
-Time: 0.050 ms
+Time: 0.047 ms
                                          QUERY PLAN                                          
 ---------------------------------------------------------------------------------------------
- Insert on tiket  (cost=0.00..0.01 rows=0 width=0) (actual time=1.004..1.004 rows=0 loops=1)
-   Buffers: shared hit=142 read=19 dirtied=5
-   ->  Result  (cost=0.00..0.01 rows=1 width=82) (actual time=0.051..0.051 rows=1 loops=1)
+ Insert on tiket  (cost=0.00..0.01 rows=0 width=0) (actual time=1.130..1.130 rows=0 loops=1)
+   Buffers: shared hit=132 read=29 dirtied=5
+   ->  Result  (cost=0.00..0.01 rows=1 width=82) (actual time=0.072..0.073 rows=1 loops=1)
          Buffers: shared hit=12 read=1 dirtied=1
  Planning:
    Buffers: shared hit=6
- Planning Time: 0.020 ms
- Trigger for constraint fk_penonton_tiket: time=0.071 calls=1
- Trigger for constraint fk_jadwal_tiket: time=0.032 calls=1
- Trigger for constraint fk_kupon_tiket: time=0.024 calls=1
- Trigger trg_redeem_kupon_tiket: time=0.372 calls=1
- Execution Time: 1.139 ms
+ Planning Time: 0.019 ms
+ Trigger for constraint fk_penonton_tiket: time=0.076 calls=1
+ Trigger for constraint fk_jadwal_tiket: time=0.031 calls=1
+ Trigger for constraint fk_kupon_tiket: time=0.029 calls=1
+ Trigger trg_redeem_kupon_tiket: time=0.398 calls=1
+ Execution Time: 1.277 ms
 (12 rows)
 
-Time: 1.324 ms
+Time: 2.312 ms
 ROLLBACK
-Time: 0.075 ms
+Time: 0.090 ms
+BEGIN
+Time: 0.049 ms
+INSERT 0 1
+Time: 0.280 ms
+ROLLBACK
+Time: 0.076 ms

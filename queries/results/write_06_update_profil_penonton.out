@@ -1,20 +1,26 @@
 Timing is on.
-Time: 0.624 ms
+Time: 1.001 ms
 BEGIN
-Time: 0.050 ms
+Time: 0.063 ms
                                                           QUERY PLAN                                                           
 -------------------------------------------------------------------------------------------------------------------------------
- Update on penonton  (cost=0.41..8.43 rows=0 width=0) (actual time=0.142..0.142 rows=0 loops=1)
-   Buffers: shared hit=21 read=3 dirtied=3
-   ->  Index Scan using penonton_pkey on penonton  (cost=0.41..8.43 rows=1 width=96) (actual time=0.006..0.006 rows=1 loops=1)
+ Update on penonton  (cost=0.41..8.43 rows=0 width=0) (actual time=0.392..0.395 rows=0 loops=1)
+   Buffers: shared hit=24 read=2 dirtied=3 written=1
+   ->  Index Scan using penonton_pkey on penonton  (cost=0.41..8.43 rows=1 width=96) (actual time=0.014..0.019 rows=1 loops=1)
          Index Cond: (id_penonton = 1)
          Buffers: shared hit=4
  Planning:
    Buffers: shared hit=3
- Planning Time: 0.043 ms
- Execution Time: 0.170 ms
+ Planning Time: 0.069 ms
+ Execution Time: 0.464 ms
 (9 rows)
 
-Time: 0.398 ms
+Time: 1.279 ms
 ROLLBACK
-Time: 0.089 ms
+Time: 0.276 ms
+BEGIN
+Time: 0.194 ms
+UPDATE 1
+Time: 0.396 ms
+ROLLBACK
+Time: 0.133 ms

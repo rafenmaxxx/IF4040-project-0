@@ -1,36 +1,42 @@
 Timing is on.
-Time: 0.578 ms
-Time: 0.299 ms
-Time: 0.206 ms
-Time: 0.142 ms
-Time: 0.114 ms
+Time: 0.685 ms
+Time: 0.337 ms
+Time: 0.188 ms
+Time: 0.160 ms
+Time: 0.147 ms
 BEGIN
-Time: 0.059 ms
+Time: 0.096 ms
                                                      QUERY PLAN                                                     
 --------------------------------------------------------------------------------------------------------------------
- Insert on info_merch  (cost=0.02..0.11 rows=0 width=0) (actual time=1.105..1.105 rows=0 loops=1)
-   Buffers: shared hit=176 read=13 dirtied=6
+ Insert on info_merch  (cost=0.02..0.11 rows=0 width=0) (actual time=1.447..1.448 rows=0 loops=1)
+   Buffers: shared hit=167 read=22 dirtied=8
    CTE transaksi_baru
-     ->  Insert on transaksi_merch  (cost=0.00..0.02 rows=1 width=28) (actual time=1.004..1.005 rows=1 loops=1)
-           Buffers: shared hit=135 read=6 dirtied=4
-           ->  Result  (cost=0.00..0.02 rows=1 width=28) (actual time=0.088..0.089 rows=1 loops=1)
+     ->  Insert on transaksi_merch  (cost=0.00..0.02 rows=1 width=28) (actual time=1.310..1.311 rows=1 loops=1)
+           Buffers: shared hit=129 read=12 dirtied=5
+           ->  Result  (cost=0.00..0.02 rows=1 width=28) (actual time=0.060..0.060 rows=1 loops=1)
                  Buffers: shared hit=12 read=1 dirtied=1
-   ->  Nested Loop  (cost=0.00..0.09 rows=3 width=12) (actual time=1.008..1.009 rows=3 loops=1)
-         Buffers: shared hit=135 read=6 dirtied=4
-         ->  CTE Scan on transaksi_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=1.005..1.006 rows=1 loops=1)
-               Buffers: shared hit=135 read=6 dirtied=4
-         ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=8) (actual time=0.001..0.001 rows=3 loops=1)
+   ->  Nested Loop  (cost=0.00..0.09 rows=3 width=12) (actual time=1.319..1.322 rows=3 loops=1)
+         Buffers: shared hit=129 read=12 dirtied=5
+         ->  CTE Scan on transaksi_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=1.316..1.317 rows=1 loops=1)
+               Buffers: shared hit=129 read=12 dirtied=5
+         ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=8) (actual time=0.001..0.002 rows=3 loops=1)
  Planning:
-   Buffers: shared hit=11 read=1
- Planning Time: 0.075 ms
- Trigger for constraint fk_penonton_transaksi on transaksi_merch: time=0.068 calls=1
- Trigger for constraint fk_kupon_transaksi on transaksi_merch: time=0.026 calls=1
- Trigger trg_redeem_kupon_merch on transaksi_merch: time=0.345 calls=1
- Trigger for constraint fk_transaksi on info_merch: time=0.057 calls=3
+   Buffers: shared hit=10 read=2
+ Planning Time: 0.098 ms
+ Trigger for constraint fk_penonton_transaksi on transaksi_merch: time=0.166 calls=1
+ Trigger for constraint fk_kupon_transaksi on transaksi_merch: time=0.059 calls=1
+ Trigger trg_redeem_kupon_merch on transaksi_merch: time=0.503 calls=1
+ Trigger for constraint fk_transaksi on info_merch: time=0.079 calls=3
  Trigger for constraint fk_item_transaksi on info_merch: time=0.042 calls=3
- Execution Time: 1.328 ms
+ Execution Time: 1.833 ms
 (21 rows)
 
-Time: 1.664 ms
+Time: 2.263 ms
 ROLLBACK
-Time: 0.076 ms
+Time: 0.198 ms
+BEGIN
+Time: 0.048 ms
+INSERT 0 3
+Time: 0.403 ms
+ROLLBACK
+Time: 0.085 ms

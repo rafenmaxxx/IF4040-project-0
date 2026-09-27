@@ -1,42 +1,48 @@
 Timing is on.
-Time: 0.688 ms
-Time: 0.272 ms
-Time: 0.180 ms
-Time: 0.094 ms
+Time: 0.833 ms
+Time: 0.283 ms
+Time: 0.231 ms
+Time: 0.151 ms
 BEGIN
-Time: 0.122 ms
+Time: 0.068 ms
                                                        QUERY PLAN                                                        
 -------------------------------------------------------------------------------------------------------------------------
- Insert on freebies  (cost=0.04..0.10 rows=0 width=0) (actual time=0.786..0.787 rows=0 loops=1)
-   Buffers: shared hit=165 read=9 dirtied=4
+ Insert on freebies  (cost=0.04..0.10 rows=0 width=0) (actual time=1.024..1.025 rows=0 loops=1)
+   Buffers: shared hit=163 read=11 dirtied=5
    CTE tiket_baru
-     ->  Insert on tiket  (cost=0.00..0.01 rows=1 width=82) (actual time=0.683..0.684 rows=1 loops=1)
+     ->  Insert on tiket  (cost=0.00..0.01 rows=1 width=82) (actual time=0.883..0.884 rows=1 loops=1)
            Buffers: shared hit=131 read=1 dirtied=1
-           ->  Result  (cost=0.00..0.01 rows=1 width=82) (actual time=0.023..0.023 rows=1 loops=1)
+           ->  Result  (cost=0.00..0.01 rows=1 width=82) (actual time=0.030..0.031 rows=1 loops=1)
                  Buffers: shared hit=13
    CTE vip_baru
-     ->  Insert on tiket_vip  (cost=0.00..0.02 rows=1 width=4) (actual time=0.736..0.737 rows=1 loops=1)
-           Buffers: shared hit=146 read=4 dirtied=2
-           ->  CTE Scan on tiket_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.683..0.684 rows=1 loops=1)
+     ->  Insert on tiket_vip  (cost=0.00..0.02 rows=1 width=4) (actual time=0.959..0.960 rows=1 loops=1)
+           Buffers: shared hit=144 read=6 dirtied=3
+           ->  CTE Scan on tiket_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.884..0.885 rows=1 loops=1)
                  Buffers: shared hit=131 read=1 dirtied=1
-   ->  Nested Loop  (cost=0.00..0.06 rows=2 width=8) (actual time=0.739..0.741 rows=2 loops=1)
-         Buffers: shared hit=146 read=4 dirtied=2
-         ->  CTE Scan on vip_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.736..0.737 rows=1 loops=1)
-               Buffers: shared hit=146 read=4 dirtied=2
-         ->  Function Scan on unnest item_id  (cost=0.00..0.02 rows=2 width=4) (actual time=0.002..0.002 rows=2 loops=1)
+   ->  Nested Loop  (cost=0.00..0.06 rows=2 width=8) (actual time=0.964..0.966 rows=2 loops=1)
+         Buffers: shared hit=144 read=6 dirtied=3
+         ->  CTE Scan on vip_baru  (cost=0.00..0.02 rows=1 width=4) (actual time=0.960..0.961 rows=1 loops=1)
+               Buffers: shared hit=144 read=6 dirtied=3
+         ->  Function Scan on unnest item_id  (cost=0.00..0.02 rows=2 width=4) (actual time=0.002..0.003 rows=2 loops=1)
  Planning:
    Buffers: shared hit=6
- Planning Time: 0.059 ms
- Trigger for constraint fk_penonton_tiket on tiket: time=0.088 calls=1
- Trigger for constraint fk_jadwal_tiket on tiket: time=0.038 calls=1
- Trigger for constraint fk_kupon_tiket on tiket: time=0.026 calls=1
- Trigger trg_redeem_kupon_tiket on tiket: time=0.143 calls=1
- Trigger for constraint fk_tiket_vip on tiket_vip: time=0.044 calls=1
- Trigger for constraint fk_tiket_freebies on freebies: time=0.030 calls=2
- Trigger for constraint fk_item_freebies on freebies: time=0.032 calls=2
- Execution Time: 1.075 ms
+ Planning Time: 0.061 ms
+ Trigger for constraint fk_penonton_tiket on tiket: time=0.118 calls=1
+ Trigger for constraint fk_jadwal_tiket on tiket: time=0.050 calls=1
+ Trigger for constraint fk_kupon_tiket on tiket: time=0.036 calls=1
+ Trigger trg_redeem_kupon_tiket on tiket: time=0.199 calls=1
+ Trigger for constraint fk_tiket_vip on tiket_vip: time=0.056 calls=1
+ Trigger for constraint fk_tiket_freebies on freebies: time=0.036 calls=2
+ Trigger for constraint fk_item_freebies on freebies: time=0.035 calls=2
+ Execution Time: 1.401 ms
 (28 rows)
 
-Time: 1.458 ms
+Time: 1.867 ms
 ROLLBACK
-Time: 0.072 ms
+Time: 0.098 ms
+BEGIN
+Time: 0.061 ms
+INSERT 0 2
+Time: 0.412 ms
+ROLLBACK
+Time: 0.070 ms

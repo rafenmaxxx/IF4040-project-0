@@ -14,3 +14,10 @@ INSERT INTO tiket (harga, status_pembayaran, id_penonton, id_jadwal_pertunjukan,
 VALUES (250000, 'Lunas', :p_id_penonton, :j_id_jadwal_pertunjukan, :k_id_kupon);
 
 ROLLBACK;
+
+BEGIN;
+
+INSERT INTO tiket (harga, status_pembayaran, id_penonton, id_jadwal_pertunjukan, id_kupon)
+VALUES (250000, 'Lunas', :p_id_penonton, :j_id_jadwal_pertunjukan, :k_id_kupon);
+
+ROLLBACK;

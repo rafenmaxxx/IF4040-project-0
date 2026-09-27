@@ -13,3 +13,11 @@ SET status_pembayaran = 'Lunas'
 WHERE id_tiket = :t_id_tiket;
 
 ROLLBACK;
+
+BEGIN;
+
+UPDATE tiket
+SET status_pembayaran = 'Lunas'
+WHERE id_tiket = :t_id_tiket;
+
+ROLLBACK;

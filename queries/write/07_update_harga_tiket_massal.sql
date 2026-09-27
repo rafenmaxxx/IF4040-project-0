@@ -18,3 +18,12 @@ WHERE id_jadwal_pertunjukan = :j_id_jadwal_pertunjukan
     AND status_pembayaran = 'Belum Lunas';
 
 ROLLBACK;
+
+BEGIN;
+
+UPDATE tiket
+SET harga = ROUND(harga * 1.10)
+WHERE id_jadwal_pertunjukan = :j_id_jadwal_pertunjukan
+    AND status_pembayaran = 'Belum Lunas';
+
+ROLLBACK;

@@ -1,18 +1,24 @@
 Timing is on.
 BEGIN
-Time: 0.149 ms
+Time: 0.147 ms
                                            QUERY PLAN                                           
 ------------------------------------------------------------------------------------------------
- Insert on penonton  (cost=0.00..0.04 rows=0 width=0) (actual time=0.214..0.215 rows=0 loops=1)
-   Buffers: shared hit=59 read=11 dirtied=3
-   ->  Result  (cost=0.00..0.04 rows=1 width=530) (actual time=0.094..0.095 rows=1 loops=1)
+ Insert on penonton  (cost=0.00..0.04 rows=0 width=0) (actual time=0.213..0.214 rows=0 loops=1)
+   Buffers: shared hit=55 read=15 dirtied=4
+   ->  Result  (cost=0.00..0.04 rows=1 width=530) (actual time=0.079..0.079 rows=1 loops=1)
          Buffers: shared hit=9 read=4 dirtied=1
  Planning:
-   Buffers: shared hit=12
- Planning Time: 0.050 ms
- Execution Time: 0.233 ms
+   Buffers: shared hit=11 read=1
+ Planning Time: 0.064 ms
+ Execution Time: 0.230 ms
 (8 rows)
 
-Time: 1.026 ms
+Time: 1.064 ms
 ROLLBACK
-Time: 0.150 ms
+Time: 0.099 ms
+BEGIN
+Time: 0.061 ms
+INSERT 0 1
+Time: 0.181 ms
+ROLLBACK
+Time: 0.072 ms
